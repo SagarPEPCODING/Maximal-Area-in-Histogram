@@ -1,0 +1,60 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int ans = 0;
+		int left[] = new int[heights.length];
+		int right[] = new int[heights.length];
+		int pointer1 = 0;
+		while (pointer1 < heights.length) {
+			int pointer2 = pointer1 + 1;
+			while (pointer2 < heights.length) {
+				if (heights[pointer1] == 0) {
+					left[pointer1] = 0;
+					break;
+				} else if (heights[pointer2] >= heights[pointer1]) {
+					pointer2++;
+				} else if (heights[pointer2] < heights[pointer1]) {
+					break;
+				}
+			}
+			int index = pointer2 - pointer1;
+			int a = index * heights[pointer1];
+			left[pointer1] = a;
+			pointer1++;
+		}
+
+		int pointer3 = heights.length - 1;
+		while (pointer3 >= 0) {
+			int pointer4 = pointer3 - 1;
+			while (pointer4 >= 0) {
+				if (heights[pointer3] == 0) {
+					right[pointer3] = 0;
+					break;
+				} else if (heights[pointer4] >= heights[pointer3]) {
+					pointer4--;
+				} else if (heights[pointer4] < heights[pointer3]) {
+					break;
+				}
+			}
+			int index = pointer3 - pointer4;
+			int a = index * heights[pointer3];
+			right[pointer3] = a;
+			pointer3--;
+		}
+
+		int val = Integer.MIN_VALUE;
+
+		for (int k = 0; k < heights.length; k++) {
+			int val1 = left[k];
+			int val2 = right[k];
+			int ans1 = (val1 + val2) - heights[k];
+			if (ans1 > val) {
+				val = ans1;
+			}
+		}
+		if (val > ans) {
+			ans = val;
+		}
+
+		return ans;
+    }
+}
